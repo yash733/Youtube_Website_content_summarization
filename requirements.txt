@@ -1,0 +1,13 @@
+streamlit
+langchain
+langchain-ollama
+langchain-groq
+langchain-core
+langchain-community
+validators
+pdfkit
+markdown
+youtube-transcript-api
+pytube
+unstructured
+wkhtmltopdf 

@@ -1,0 +1,23 @@
+[project]
+name = "youtube-and-webpage-summarizer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "faiss-cpu>=1.11.0",
+    "langchain>=0.3.26",
+    "langchain-community>=0.3.26",
+    "langchain-core>=0.3.66",
+    "langchain-groq>=0.3.4",
+    "langchain-ollama>=0.3.3",
+    "langgraph>=0.5.0",
+    "markdown>=3.8.2",
+    "pdfkit>=1.0.0",
+    "pytube>=15.0.0",
+    "streamlit>=1.46.1",
+    "unstructured>=0.18.1",
+    "validators>=0.35.0",
+    "wkhtmltopdf>=0.2",
+    "youtube-transcript-api>=1.1.0",
+]
