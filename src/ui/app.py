@@ -61,11 +61,14 @@ if st.session_state.user_selection.get('llm_model'):
             try:
                 with st.spinner('Processing...'):
                     if 'youtube.com' in url:
-                        loader = YoutubeLoader.from_youtube_url(url, add_video_info=True)
+                        docs = YoutubeLoader.from_youtube_url(url, add_video_info=True).load()
+                        for doc in docs:
+                            meta = doc.metadata
+                            doc.page_content = f"Title: {meta.get('title', '')}\nDescription: {meta.get('description', '')}\nTranscript: {doc.page_content}"
+                        data = docs
                     else:
-                        loader = UnstructuredURLLoader(urls=[url],
-                                                       headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"})
-                    data = loader.load()
+                        data = UnstructuredURLLoader(urls=[url],
+                                                       headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"}).load()
 
                     chain=load_summarize_chain(llm = model,chain_type="stuff",prompt=prompt_)
                     output_summary=chain.invoke({"input_documents":data}) # wont accept any other key input format
@@ -77,7 +80,7 @@ if st.session_state.user_selection.get('html_'):
     output_summary = st.text_area(label="Output:", value=st.session_state.user_selection['html_'], height=500)
     file_name = st.text_input(label="Setup File Name")
     if file_name:
-        with tempfile.NamedTemporaryFile(delete=True, suffix=".pdf") as temp_pdf:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf:
             config = pdfkit.configuration(wkhtmltopdf=r'Y:\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')  # <-- update this path
 
             pdfkit.from_string(st.session_state.user_selection.get('html_'), temp_pdf.name, configuration=config)
